@@ -1,0 +1,11 @@
+{
+  "name": "firebase-app",
+  "version": "0.0.1",
+  "description": "a framework for building complex apps using firebase",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Georges Boris",
+  "license": "BSD-2.0"
+}
