@@ -7,5 +7,5 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Georges Boris",
-  "license": "BSD-2.0"
+  "license": "BSD-2-Clause"
 }
