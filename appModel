@@ -1,0 +1,55 @@
+{
+  objects: 'user', 'task',
+  id: 'add user to task',
+
+}
+
+-> define árvore
+  -> objetos
+
+AUTHUSER, WORKSPACE, TASK, USER, TEAM
+
+logOwners/ -> possuem log
+AUTHUSER, WORKSPACE, TASK, USER, TEAM
+
+def logOwner AUTHUSER:
+  path: (authUserId) => ':authUserId', => /__logs__/AUTHUSERS/:authUserId
+    ':workspaceId/:userId/' => /__logs__/USERS/:workspaceId/:userId
+  rules:
+
+/__logs__/AUTHUSERS/:authUserId
+/__logs__/AUTHUSERS/:workspaceId/:authUserId
+
+
+paths/
+user
+userSettings
+task
+taskDates
+
+actions/
+createUser
+
+def user:
+  path: '/users/$userId',
+  rules: {}
+
+def createUser:
+  logOwners: ['user']
+
+def addTaskAssignee:
+  logOwners: ['task', 'user']
+  logPayload: ['value']
+  outputs: ['client', 'server']
+  rules: [userCanWriteToTask]
+  updates: ({
+    ['taskAssignees/taskId/userId']: true,
+    ['assignedTasks/userId/taskId']: true
+  })
+
+-> definir objetos -> dados
+-> definir relacionamentos -> id/id
+
+-> definir ações
+
+-> definir outputs
