@@ -31,7 +31,7 @@ function getFiles(filePaths) {
 	return new Promise((resolve, reject) => {
 		filePaths.forEach(filePath => {
 
-			const fileReaded = require(`./${filePath}`);
+			const fileReaded = require(filePath);
 			files.push(fileReaded);
 
 			if (files.length == filePaths.length) {
@@ -43,9 +43,9 @@ function getFiles(filePaths) {
 
 }
 
-listFolders('./actions').forEach(folderPath => {
+listFolders(__dirname + '/actions').forEach(folderPath => {
 
-	const filePaths = listFiles(`./${folderPath}`);
+	const filePaths = listFiles(folderPath);
 
 	getFiles(filePaths).then(({ filePath, files }) => {
 		files.forEach(file => {
