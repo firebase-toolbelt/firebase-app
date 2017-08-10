@@ -1,6 +1,4 @@
-const action = require('../../demo/actions/authUsers/createAuthUser');
-const owners = require('../../demo/owners/owners');
-const authUserPaths = require('../../demo/paths/authUsers');
+const { actions, paths } = require('../../demo');
 
 function validateProps(props, data) {
 	return new Promise((resolve, reject) => {
@@ -18,23 +16,16 @@ function validateProps(props, data) {
 	});
 }
 
-function getActionUpdates(actionType, data) {
+module.exports = function getActionUpdates(ownerType, actionType, data) {
 
-	const { validate, updates } = action[actionType];
+	const action = actions[ownerType][actionType];
+	const ownerPaths = paths[ownerType];
+
+	const { validate, updates } = action;
 
 	return validateProps(validate, data).then(() => (
-		updates(data, authUserPaths.paths)
+		updates(data, ownerPaths.paths)
 	));
 
 }
 
-getActionUpdates('updateUserName', { 
-	userId: '123', 
-	userName: 'new user name' }
-).then(updateUserNameAction => {
-	console.log(updateUserNameAction)
-});
-
-module.exports = {
-	getActionUpdates
-}

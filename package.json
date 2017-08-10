@@ -4,9 +4,15 @@
   "description": "a framework for building complex apps using firebase",
   "main": "index.js",
   "scripts": {
-  	"start": "node ./demo/index.js",
+    "start": "node ./demo/index.js",
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Georges Boris",
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "firebase": "^4.2.0",
+    "webpack": "^3.5.3"
+  },
+  "devDependencies": {}
 }
