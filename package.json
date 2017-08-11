@@ -3,16 +3,25 @@
   "version": "0.0.1",
   "description": "a framework for building complex apps using firebase",
   "main": "index.js",
+  "files": [
+    "es",
+    "lib",
+    "umd"
+  ],
   "scripts": {
     "start": "node ./demo/index.js",
-    "build": "webpack",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "nwb build-web-module",
+    "clean": "nwb clean-module",
+    "test": "nwb test",
+    "test:coverage": "nwb test --coverage",
+    "test:watch": "nwb test --server"
   },
   "author": "Georges Boris",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "firebase": "^4.2.0",
     "webpack": "^3.5.3"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nwb": "0.18.x"
+  }
 }

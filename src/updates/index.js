@@ -1,19 +1,18 @@
-const { actions, paths } = require('../../demo');
+const { projectFolder } = require('../../app.config');
+const { actions, paths } = require(`../../${projectFolder}`);
 
 function validateProps(props, data) {
-	return new Promise((resolve, reject) => {
-		props.forEach((prop, i) => {
+	for (let i = 0; i < props.length; i++) {
 
-			if (data[prop] == null) {
-				reject();
-			}
+		if (data[props[i]] == null) {
+			return false;
+		}
 
-			if ((i + 1) == props.length) {
-				resolve();
-			}
-		
-		});
-	});
+		if ((i + 1) == props.length) {
+			return true;
+		}
+
+	}
 }
 
 module.exports = function getActionUpdates(ownerType, actionType, data) {
@@ -22,10 +21,12 @@ module.exports = function getActionUpdates(ownerType, actionType, data) {
 	const ownerPaths = paths[ownerType];
 
 	const { validate, updates } = action;
+	const dataIsPermited = validateProps(validate, data); 
 
-	return validateProps(validate, data).then(() => (
-		updates(data, ownerPaths.paths)
-	));
+	if (dataIsPermited == false) {
+		return;
+	}
+
+	return updates(data, ownerPaths.paths);
 
 }
-
