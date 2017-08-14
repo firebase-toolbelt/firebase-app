@@ -51,7 +51,7 @@ const updateUserName: {
 };
 ```
 
-You may want to create **client side validations** so your actions always hold the payload you expect them too. We use [validate-properties](https://github.com/tasking/validate-properties) internally to check this validations.
+You may want to create **client side validations** so your actions always holds the payload you expect them to. We use [validate-properties](https://github.com/tasking/validate-properties) internally to check this validations.
 
 ```javascript
 const createUser: {
