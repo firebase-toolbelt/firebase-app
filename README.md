@@ -40,7 +40,7 @@ const paths = {
 };
 ```
 
-The second most basic thing is writing on this paths. Sometimes in several of them simultaneously.
+The second most basic thing is writing on this paths. Sometimes to several of them simultaneously.
 You should **define your actions**, sou you will always access these updates in the same way throughout your application.
 
 ```javascript
@@ -51,7 +51,7 @@ const updateUserName: {
 };
 ```
 
-You may want to create **client side validations** so your actions always hold the payload you expect them too.
+You may want to create **client side validations** so your actions always hold the payload you expect them too. We use [validate-properties](https://github.com/tasking/validate-properties) internally to check this validations.
 
 ```javascript
 const createUser: {
