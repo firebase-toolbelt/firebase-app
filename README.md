@@ -66,7 +66,7 @@ const createUser: {
 ```
 
 Firebase does not create logs of your actions. Well... we do.
-It's actually really easy to store logs using firebase-app. You just have add your **action log owners**.
+It's actually really easy to store logs using firebase-app. You just have to add **log owners** to your actions.
 This is totally optional. If you want to skip it, be my guest.
 
 ```javascript
