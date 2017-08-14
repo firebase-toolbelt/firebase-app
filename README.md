@@ -2,68 +2,101 @@
 
 Firebase is awesome and it's really easy to setup a small app using it.
 However, when building a complex application using solely firebase as it's backend a lot of caveats appear.
-This module make this easier by allowing a modular approach that solves a lot of this problems.
+**Firebase-app** is a set of utilities that are used to solve a lot of this problems.
 
-We do this by following this pattern of code structuring:
+This module provides tools so you can:
 
-- All your firebase **paths** are defined and read/validate rules are attached to them.
+- define and access your app's data paths
+- define, execute and test your app's actions (even offline)
+- validate your actions both client and server side
+- create your firebase server side security rules using javascript
+- check your server side rules coverage for your actions
+- automatically create logs for your actions
+
+What we don't provide:
+
+- Any custom way to read your database. If you are using react we strongly recommend that you check out our other project, [firebase-sync](https://github.com/tasking/firebase-sync).
+
+Although you can use this utilities however you like, we believe that by following the recommended code structure you will also gain a lot of productivity when building and mantaining your firebase-backed application.
+
+## Getting started
+
+One of the most basic things when working with firebase is creating your application structure.
+Accessing the data paths may get messy really quickly.
+
+The first thing you have to do is **define your paths**, so you always access them through these objects instead of manually writing them.
 
 ```javascript
-// ./paths/users
-
-module.exports = {
-  paths: {
-    users: 'users',
-    user: (userId) => `users/${userId}`
-  },
-  rules: {
-    `users/$userId`: {
-      read: 'auth.uid == $userId',
-      validate: 'newDate.child('name').exists()'
-    }
-  }
+const paths = {
+  
+  users: `users`,
+  user: (userId) => `users/${userId}`,
+  userName: (userId) => `users/${userId}/name`,
+  userEmail: (userId) => `users/${userId}/email`,
+  
+  posts: `posts`,
+  userPosts: (userId) => `posts/${userId}`
+  
 };
 ```
 
-- All your firebase updates are defined as **actions**,
-  these actions holds the logic for each update,
-  they may validate the data client-side before sending it to firebase,
-  they hold the server-side rules for applying these updates,
-  they specify the **action owners** that automatically receives these actions logs,
-  they may omit parts of the action from being logged for sensitive information or large updates,
-  they may mark the log as hidden to facilitate meaningful logs lists.
+The second most basic thing is writing on this paths. Sometimes in several of them simultaneously.
+You should **define your actions**, sou you will always access these updates in the same way throughout your application.
 
 ```javascript
-// ./actions/users
-
-module.exports = {
-  updateUserName: {
-    actionOwners: ['user'],
-    validate: ['userName'],
-    rules: `$userId == auth.uid`,
-    updates: (data, paths) => ({
-      [paths.user(data.userId)]: data.userName
-    })
-  }
-}
+const updateUserName: {
+  updates: (payload) => ({
+    [paths.userName(payload.userId)]: payload.value
+  })
+};
 ```
 
-- You can test, mock and apply these actions easily.
-  This way you can even mimick your firebase-app usage offline,
-  by triggering actions on a simple object, watching them change your mocked firebase data,
-  and even testing your app's security rules.
-  
+You may want to create **client side validations** so your actions always hold the payload you expect them too.
+
 ```javascript
-
-// this object can be used as argument to the FirebaseRef.update() function.
-const updates = getActionUpdate('updateUserName', { userId: '123', userName: 'new user name' })
-
-// it can be applied locally
-const db = applyActionUpdates(updates, {})
-
-// or directly applied to firebase
-executeActionUpdate('updateUserName', { userId: '123', userName: 'new user name' })
+const createUser: {
+  validate: ['name', 'email'],
+  updates: (payload) => ({
+    [paths.user(payload.userId)]: {
+      name: payload.name,
+      email: payload.email
+    }
+  })
+};
 ```
 
-We use firebase-rules for dealing with our rules creating.
-And targaryen for all our rules testing.
+Firebase does not create logs of your actions. Well... we do.
+It's actually really easy to store logs using firebase-app. You just have add your **action log owners**.
+This is totally optional. If you want to skip it, be my guest.
+
+```javascript
+const updateUserEmail: {
+  logOwners: ['user'],
+  updates: (payload) => ({
+    [paths.userEmail(payload.userId)]: payload.value
+  })
+};
+```
+
+After you create your actions you just have to execute them passing in actual data.
+
+```javascript
+executeAction(updateUserEmail, { value: 'user@email.com' })
+```
+
+You can test these actions easily since we also provide ways to get their values instead of directly applying them to firebase.
+
+```javascript
+// this returns an object with updates that can be passed to FirebaseRef.update.
+// in fact, that is exactly what the `executeAction` helper does.
+const updates = getActionUpdates(updateUserName, { userName: 'new user name' })
+
+// you can also apply this updates locally instead of passing them to the database.
+// this way you can mock all your application's changes. even offline.
+const mockedDatabase = applyActionUpdates(updates, {})
+```
+
+## Next steps
+
+We also provide tools so you can create your firebase security rules and test their coverage on your created actions.
+Internally we use both (firebase-rules)[https://github.com/tasking/firebase-rules] and (targaryen)[https://github.com/goldibex/targaryen] to build and test your rules.
