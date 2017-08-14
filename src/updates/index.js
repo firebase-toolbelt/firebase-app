@@ -1,32 +1,15 @@
-const { projectFolder } = require('../../app.config');
-const { actions, paths } = require(`../../${projectFolder}`);
+const validateProperties = require('./validateProperties');
+const parseUpdates = require('./parseUpdates');
 
-function validateProps(props, data) {
-	for (let i = 0; i < props.length; i++) {
+module.exports = function getActionUpdates(action, payload) {
 
-		if (data[props[i]] == null) {
-			return false;
+	if (action.validate) {
+		const errors = validateProperties(payload, action.validate, true);
+		if (errors.length) {
+			return new Error(errors.toString());
 		}
-
-		if ((i + 1) == props.length) {
-			return true;
-		}
-
-	}
-}
-
-module.exports = function getActionUpdates(ownerType, actionType, data) {
-
-	const action = actions[ownerType][actionType];
-	const ownerPaths = paths[ownerType];
-
-	const { validate, updates } = action;
-	const dataIsPermited = validateProps(validate, data); 
-
-	if (dataIsPermited == false) {
-		return;
 	}
 
-	return updates(data, ownerPaths.paths);
+	return parseUpdates(action.updates(payload));
 
 }

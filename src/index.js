@@ -1,16 +1,9 @@
 const getActionUpdates = require('./updates');
 const executeActionUpdate = require('./actions');
-const getRules = require('./rules');
-
-const updateUserNameAction = getActionUpdates('users', 'updateUserName', { 
-	userId: '123', 
-	userName: 'new user name' 
-})
-
-console.log(updateUserNameAction);
+const generateRules = require('./rules');
 
 module.exports = {
 	getActionUpdates,
 	executeActionUpdate,
-	getRules
+	generateRules
 }

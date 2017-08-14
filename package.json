@@ -19,6 +19,8 @@
   "author": "Georges Boris",
   "license": "BSD-2-Clause",
   "dependencies": {
+    "bluebird": "^3.5.0",
+    "validate-properties": "https://github.com/tasking/validate-properties.git",
     "webpack": "^3.5.3"
   },
   "devDependencies": {

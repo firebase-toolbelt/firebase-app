@@ -1,11 +1,11 @@
-const { projectFolder } = require('../../app.config');
-const { paths, owners } = require(`../../${projectFolder}`);
+const { writeFile } = require('fs');
 
-module.exports = function getRules() {
+module.exports = function generateRules(paths, owners) {
 	let rulesObj = {};
+	const ownerKeys = Object.keys(owners);
 
 	return new Promise((resolve, reject) => {
-		owners.forEach((owner, i) => {
+		ownerKeys.forEach((owner, i) => {
 
 			const { rules } = paths[owner];
 			const rulePaths = Object.keys(rules);
@@ -14,8 +14,16 @@ module.exports = function getRules() {
 				rulesObj[rulePath] = rules[rulePath];
 			});
 
-			if ((i + 1) == owners.length) {
-				resolve(rulesObj)
+			if ((i + 1) == ownerKeys.length) {
+
+				writeFile(__dirname + '/rules.json', JSON.stringify(rulesObj), function(err) {
+					if (err) {
+						console.log(err);
+						return;
+					}
+
+					resolve();
+				})
 			}
 
 		});

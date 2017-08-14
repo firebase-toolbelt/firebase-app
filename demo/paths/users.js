@@ -4,7 +4,7 @@ module.exports = {
     user: (userId) => `users/${userId}`
   },
   rules: {
-    'users/$userId/a': {
+    'users/$userId': {
       read: 'auth.uid == $userId',
       validate: "newDate.child('name').exists()"
     }
