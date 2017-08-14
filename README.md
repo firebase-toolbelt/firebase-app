@@ -99,4 +99,4 @@ const mockedDatabase = applyActionUpdates(updates, {})
 ## Next steps
 
 We also provide tools so you can create your firebase security rules and test their coverage on your created actions.
-Internally we use both (firebase-rules)[https://github.com/tasking/firebase-rules] and (targaryen)[https://github.com/goldibex/targaryen] to build and test your rules.
+Internally we use both [firebase-rules](https://github.com/tasking/firebase-rules) and [targaryen](https://github.com/goldibex/targaryen) to build and test your rules.
