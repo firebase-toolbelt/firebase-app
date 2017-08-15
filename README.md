@@ -45,6 +45,7 @@ You should **define your actions**, sou you will always access these updates in 
 
 ```javascript
 const updateUserName: {
+  id: 'updateUserName',
   updates: (payload) => ({
     [paths.userName(payload.userId)]: payload.value
   })
@@ -55,6 +56,7 @@ You may want to create **client side validations** so your actions always holds 
 
 ```javascript
 const createUser: {
+  id: 'createUser',
   validate: ['name', 'email'],
   updates: (payload) => ({
     [paths.user(payload.userId)]: {
@@ -71,6 +73,7 @@ This is totally optional. If you want to skip it, be my guest.
 
 ```javascript
 const updateUserEmail: {
+  id: 'updateUserEmail',
   logOwners: ['user'],
   updates: (payload) => ({
     [paths.userEmail(payload.userId)]: payload.value
