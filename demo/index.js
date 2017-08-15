@@ -1,21 +1,12 @@
-const actions = require('./actions');
-const owners = require('./owners/owners');
-const paths = require('./paths');
-const { getActionUpdates, generateRules } = require('../src');
+const getHelpers = require('../src');
 
-const userAction = actions.users;
-
-// getActionUpdates(userAction.updateUserName, { 
-// 	userId: '_userId',
-// 	userName: '_userName'
-// }).then(updates => {
-// 	console.log(updates);
-// });
-
-// generateRules(paths, owners);
+const {
+	applyAction,
+	executeAction,
+	getActionUpdates
+} = getHelpers({ owners: require('./owners/owners') });
 
 module.exports = {
-	actions,
-	owners,
-	paths
-}
+	actions: require('./actions/actions'),
+	paths: require('./paths/paths')
+};
