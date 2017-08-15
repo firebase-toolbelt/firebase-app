@@ -74,7 +74,7 @@ This is totally optional. If you want to skip it, be my guest.
 ```javascript
 const updateUserEmail = {
   id: 'updateUserEmail',
-  logOwners: ['user'],
+  log: ['user'],
   updates: (payload) => ({
     [paths.userEmail(payload.userId)]: payload.value
   })
