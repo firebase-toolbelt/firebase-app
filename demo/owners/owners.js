@@ -5,8 +5,8 @@
 module.exports = {
   'user': 'userId',
   'post': {
-    rules: '$userId',
-    validate: ['userId'],
-    path: (payload) => payload.userId
+    rules: '$postId',
+    validate: ['postId'],
+    path: (payload) => payload.postId
   }
 };

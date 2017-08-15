@@ -3,6 +3,7 @@ const paths = require('../paths/paths');
 module.exports = {
 
   createUser: {
+    id: 'createUser',
     log: ['user'],
     validate: ['name', 'email'],
     updates: (payload) => ({
@@ -14,6 +15,7 @@ module.exports = {
   },
 
   updateUserName: {
+    id: 'updateUserName',
     log: ['user'],
     validate: ['value'],
     updates: (payload) => ({
@@ -30,6 +32,7 @@ module.exports = {
   },
   
   createPost: {
+    id: 'createPost',
     log: ['user', 'post'],
     create: 'postId',
     validate: ['title', 'body'],
@@ -44,6 +47,7 @@ module.exports = {
   },
 
   removePost: {
+    id: 'removePost',
     log: ['user', 'post'],
     updates: (payload) => ({
       [paths.post(payload.postId)]: null
@@ -51,6 +55,7 @@ module.exports = {
   },
 
   addTagToPost: {
+    id: 'addTagToPost',
     log: ['post'],
     validate: ['tagId'],
     updates: (payload) => ({
@@ -60,6 +65,7 @@ module.exports = {
   },
 
   removeTagFromPost: {
+    id: 'removeTagFromPost',
     log: ['post'],
     validate: ['tagId'],
     updates: (payload) => ({

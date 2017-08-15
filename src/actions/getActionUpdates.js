@@ -1,15 +1,10 @@
 import validate from 'validate-properties';
+import getLogOwners from './utils/getLogOwners';
+import getLogUpdates from './utils/getLogUpdates';
 import defaultCreateId from './utils/defaultCreateId';
 import parseUpdates from './utils/parseUpdates';
 
 function buildGetActionUpdates(config) {
-
-  /**
-   * Build log owners
-   */
-
-  const logOwners = config.owners
-    ? buildLogOwners(config.owners) : {};
 
   /**
    * Use firebase for id creation
@@ -17,6 +12,18 @@ function buildGetActionUpdates(config) {
 
   const createId = config.firebase
     ? config.firebase.database().ref().push : defaultCreateId;
+
+  /**
+   * Build log owners
+   */
+
+  const logOwners = getLogOwners(config);
+
+  /**
+   * Build log updates creator
+   */
+
+  const getLogUpdates = buildGetLogUpdates(config, logOwners, createId);
 
   /**
    * Build getActionUpdates
