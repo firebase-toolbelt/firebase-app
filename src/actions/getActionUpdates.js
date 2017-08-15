@@ -29,7 +29,7 @@ function buildGetActionUpdates(config) {
    * Build getActionUpdates
    */
 
-  return function getActionUpdates(action, payload) {
+  return function getActionUpdates(action, payload = {}, options = {}) {
 
     let returnables = {};
     let validations = [];
@@ -83,10 +83,20 @@ function buildGetActionUpdates(config) {
      */
 
     const localNow = Date.now();
+
+    const now = config.firebase
+      ? config.firebase.database.ServerValue.TIMESTAMP
+      : localNow;
+
+    const authUserId = config.firebase
+      ? config.firebase.auth().currentUser
+      : options.authUserId || 'authUserId';
+
     const helpers = {
       createId,
-      localNow: localNow,
-      now: config.firebase ? config.firebase.database.ServerValue.TIMESTAMP : localNow,
+      authUserId,
+      localNow,
+      now,
       addToReturnables: (key, value) => returnables[key] = value
     };
 
