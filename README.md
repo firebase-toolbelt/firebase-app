@@ -44,7 +44,7 @@ The second most basic thing is writing on this paths. Sometimes to several of th
 You should **define your actions**, sou you will always access these updates in the same way throughout your application.
 
 ```javascript
-const updateUserName: {
+const updateUserName = {
   id: 'updateUserName',
   updates: (payload) => ({
     [paths.userName(payload.userId)]: payload.value
@@ -55,7 +55,7 @@ const updateUserName: {
 You may want to create **client side validations** so your actions always holds the payload you expect them to. We use [validate-properties](https://github.com/tasking/validate-properties) internally to check this validations.
 
 ```javascript
-const createUser: {
+const createUser = {
   id: 'createUser',
   validate: ['name', 'email'],
   updates: (payload) => ({
@@ -72,7 +72,7 @@ It's actually really easy to store logs using firebase-app. You just have to add
 This is totally optional. If you want to skip it, be my guest.
 
 ```javascript
-const updateUserEmail: {
+const updateUserEmail = {
   id: 'updateUserEmail',
   logOwners: ['user'],
   updates: (payload) => ({
