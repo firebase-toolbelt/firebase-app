@@ -7,9 +7,7 @@
  *   - a simple update object
  */
 
-const Promise = require('bluebird');
-
-module.exports = function parseUpdates(updates) {
+export default function parseUpdates(updates) {
   return Promise.resolve(updates)
     .then((result) => (result.length) ? Object.assign({}, ...result) : result);
 }
