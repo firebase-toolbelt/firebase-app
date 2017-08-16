@@ -2,7 +2,7 @@
  * These are equivalent.
  */
 
-module.exports = {
+export default {
   'user': 'userId',
   'post': {
     rules: '$postId',

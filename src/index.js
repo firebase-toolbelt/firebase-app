@@ -1,8 +1,8 @@
-const getActionUpdates = require('./updates/getActionUpdates');
-const buildExecuteAction = require('./updates/executeAction');
-const applyAction = require('./updates/applyAction');
+import buildGetActionUpdates from './actions/getActionUpdates';
+import buildExecuteAction from './actions/executeAction';
+import buildApplyAction from './actions/applyAction';
 
-module.exports = function getHelpers(config) {
+export default function getHelpers(config) {
 
 	const getActionUpdates = buildGetActionUpdates(config);
 	const executeAction = buildExecuteAction(config, getActionUpdates);
@@ -12,5 +12,5 @@ module.exports = function getHelpers(config) {
 		getActionUpdates,
 		executeAction,
 		applyAction
-	};	
+	};
 };

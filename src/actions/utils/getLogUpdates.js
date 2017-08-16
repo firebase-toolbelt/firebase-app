@@ -6,12 +6,17 @@ export default function buildGetLogUpdates(config, logOwners, createId) {
 
   return function getLogUpdates(action, payload, helpers) {
   
-    const owners = action.owners || [blankOwner];
+    const owners = action.log || [blankOwner];
   
-    return owners.reduce((acc, owner) => {
+    return owners.reduce((acc, ownerId) => {
+
+      const logId = createId();
+
+      helpers.addToReturnables(`logId/${ownerId}`, logId);
       
+      const owner = logOwners[ownerId];
       const actionBasePath = action.logHidden ? hiddenPath : basePath;
-      const logPath = `${actionBasePath}/${owner.path(payload)}/${createId()}/${action.id}`;
+      const logPath = `${actionBasePath}/${ownerId}/${owner.path(payload)}/${logId}/${action.id}`;
 
       const parsedPayload = action.logOmit
         ? omit(payload, logOmit) : payload;

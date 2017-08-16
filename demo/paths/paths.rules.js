@@ -2,9 +2,9 @@
  * These are all READ or VALIDATE rules.
  */
 
-const paths = require('./paths');
+import paths from './paths';
 
-module.exports = {
+export default {
   __setup__: 'paths',
 
   [paths.users]: 'auth.uid != null',

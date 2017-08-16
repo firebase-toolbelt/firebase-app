@@ -17,11 +17,10 @@ export default function getLogOwners(config) {
 
   let owners = mapValues(config.owners, ownerObj => {
     if (isString(ownerObj)) {
-      let pathId = `${ownerObj}Id`;
       return {
-        rules: `$${pathI}`,
-        validate: [pathId],
-        path: payload => payload[pathId]
+        rules: `$${ownerObj}`,
+        validate: [ownerObj],
+        path: payload => payload[ownerObj]
       };
     }
 
@@ -44,7 +43,7 @@ export default function getLogOwners(config) {
 
   let blankOwner = config.logBlankPath || '__';
   owners[blankOwner] = {
-    rules: logBlankPath,
+    rules: blankOwner,
     validate: [() => true],
     path: () => '_'
   };

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   
   users: 'users',
   user: (userId) => `users/${userId}`,

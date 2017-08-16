@@ -1,10 +1,10 @@
 import validate from 'validate-properties';
 import getLogOwners from './utils/getLogOwners';
-import getLogUpdates from './utils/getLogUpdates';
+import buildGetLogUpdates from './utils/getLogUpdates';
 import defaultCreateId from './utils/defaultCreateId';
 import parseUpdates from './utils/parseUpdates';
 
-function buildGetActionUpdates(config) {
+export default function buildGetActionUpdates(config) {
 
   /**
    * Use firebase for id creation
@@ -29,17 +29,17 @@ function buildGetActionUpdates(config) {
    * Build getActionUpdates
    */
 
-  return function getActionUpdates(action, payload = {}, options = {}) {
+  return function getActionUpdates(action, _payload = {}, options = {}) {
 
     let returnables = {};
     let validations = [];
-    let payload = payload;
+    let payload = _payload;
 
     /**
      * Check if all log owners are defined.
      */
 
-    if (action.log && action.log.some((owner) => !config.owners[ownerId])) {
+    if (action.log && action.log.some((ownerId) => !config.owners[ownerId])) {
       return Promise.reject(new Error('All log owners must be defined. ' + action));
     }
 
@@ -107,7 +107,7 @@ function buildGetActionUpdates(config) {
 
     return parseUpdates(action.updates(payload, helpers))
       .then((updates) => ({
-        updates: { ...updates, ...getLogUpdates(action, payload) },
+        updates: { ...updates, ...getLogUpdates(action, payload, helpers) },
         returnables: returnables
       }));
     

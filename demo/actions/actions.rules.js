@@ -2,7 +2,7 @@
  * These are all WRITE rules.
  */
 
-const paths = require('../paths/paths');
+import paths from '../paths/paths';
 
 const userIdIsAuth = `newData.child('userId') == auth.uid`;
 const postWasCreatedByUser = `root.child(${paths.postCreatedBy('$postId')}).val() == auth.uid`;
