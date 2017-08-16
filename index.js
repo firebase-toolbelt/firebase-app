@@ -1,4 +1,13 @@
-module.exports = function () {
-  // this is real.
-  // but i'm just saving my package's name meanwhile.
-};
+#!/usr/bin/env node
+
+const program = require('commander');
+const buildGenerateRules = require(__dirname + '/src/rules');
+
+program
+	.arguments('<ruleSource>')
+	.action(function(ruleSource) {
+	  buildGenerateRules(ruleSource).then(rules => {
+	  	console.log(rules);
+	  });
+	})
+	.parse(process.argv);

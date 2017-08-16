@@ -2,9 +2,9 @@
  * These are all READ or VALIDATE rules.
  */
 
-import paths from './paths';
+const paths = require('./paths');
 
-export default {
+module.exports = {
   __setup__: 'paths',
 
   [paths.users]: 'auth.uid != null',
@@ -37,8 +37,8 @@ export default {
     validate: 'newData.val() == auth.uid'
   },
 
-  [paths.postTags]: 'auth.uid != null',
-  [paths.tagPosts]: 'auth.uid != null',
+  [paths.postTags('$tagId')]: 'auth.uid != null',
+  [paths.tagPosts('$tagId')]: 'auth.uid != null',
 
   [paths.userPosts('$userId')]: 'auth.uid == $userId'
 

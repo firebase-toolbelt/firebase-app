@@ -19,10 +19,15 @@
   "author": "Georges Boris",
   "license": "BSD-2-Clause",
   "dependencies": {
+    "commander": "^2.11.0",
+    "glob": "^7.1.2",
     "lodash": "^4.17.4",
     "validate-properties": "^1.0.0"
   },
   "devDependencies": {
     "nwb": "0.18.x"
+  },
+  "bin": {
+    "app": "./index.js"
   }
 }

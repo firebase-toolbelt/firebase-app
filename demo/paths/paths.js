@@ -1,4 +1,4 @@
-export default {
+ module.exports = {
   
   users: 'users',
   user: (userId) => `users/${userId}`,
@@ -9,6 +9,8 @@ export default {
   post: (postId) => `posts/${postId}`,
   postTitle: (postId) => `posts/${postId}/title`,
   postBody: (postId) => `posts/${postId}/body`,
+  postCreatedAt: (postId) => `posts/${postId}/createdAt`,
+  postCreatedBy: (postId) => `posts/${postId}/createdBy`,
 
   postTags: (postId) => `postTags/${postId}`,
   postTag: (postId, tagId) => `postTags/${postId}/${tagId}`,

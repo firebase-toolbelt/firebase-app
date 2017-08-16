@@ -1,31 +1,23 @@
-import { writeFile } from 'fs';
+const readAllFiles = require('./_readAllFiles');
+const generateRules = require('./_generateRules');
 
-export default function generateRules(paths, owners) {
+module.exports = function buildGenerateRules(ruleSource) {
   let rulesObj = {};
-  const ownerKeys = Object.keys(owners);
 
   return new Promise((resolve, reject) => {
-    ownerKeys.forEach((owner, i) => {
+    readAllFiles(ruleSource).then(files => {
+      files.forEach((file, i) => {
 
-      const { rules } = paths[owner];
-      const rulePaths = Object.keys(rules);
+        let fileRules = require(`../../${file}`);
 
-      rulePaths.forEach(rulePath => {
-        rulesObj[rulePath] = rules[rulePath];
-      });
-
-      if ((i + 1) == ownerKeys.length) {
-
-        writeFile(__dirname + '/rules.json', JSON.stringify(rulesObj), function(err) {
-          if (err) {
-            console.log(err);
-            return;
+        generateRules(fileRules, rulesObj).then(() => {
+          if ((i + 1) == files.length) {
+            rulesObj['__setup__'] = null;
+            resolve(rulesObj);
           }
+        });
 
-          resolve();
-        })
-      }
-
+      })
     });
   });
 }

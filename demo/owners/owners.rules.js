@@ -2,7 +2,7 @@
  * These are all READ rules.
  */
 
-export default {
+module.exports = {
   __setup__: 'owners',
 
   user: 'auth.uid == $userId',
