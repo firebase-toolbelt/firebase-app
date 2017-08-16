@@ -24,28 +24,18 @@ export default function buildGetLogUpdates(getLogPath, createId) {
        */
 
       const parsedPayload = action.logOmit
-        ? omit(payload, logOmit) : payload;
-        
-      const metaPayload = {
+        ? omit(payload, action.logOmit) : payload;
+
+      const logPath = getLogPath(action, payload, ownerId, logId, action.logHidden);
+
+      acc[logPath] = {
         __action: action.id,
         __authUserId: helpers.authUserId,
-        __timestamp: helpers.now
+        __timestamp: helpers.now,
+        action: {
+          [action.id]: parsedPayload
+        }
       };
-
-      const mergedPayload = { ...parsedPayload, ...metaPayload };
-
-      /**
-       * Save the payload on both log paths.
-       * This is necessary so the firebase-rules is more efficient.
-       * Although there is a 100% upload increase because of this,
-       * actions are not used nearly enough as read operations,
-       * this should not be a concern for the application.
-       */
-
-      const logPaths = getLogPath(action, payload, ownerId, logId, action.logHidden);
-
-      acc[logPaths.actions] = mergedPayload;
-      acc[logPaths.list] = mergedPayload;
 
       return acc;
     }, {});

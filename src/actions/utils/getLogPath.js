@@ -12,13 +12,7 @@ export default function buildGetLogPath(config, logOwners) {
     const logBasePath = isHidden ? hiddenPath : basePath;
     const logOwnerPath = `${logBasePath}/${ownerId}/${owner.path(payload)}`;
 
-    return (logId) ? {
-      actions: `${logOwnerPath}/actions/${logId}/${action.id}`,
-      list: `${logOwnerPath}/items/${logId}`
-    } : {
-      actions: `${logOwnerPath}/actions/`,
-      list: `${logOwnerPath}/items/`,
-    };
+    return (logId) ? `${logOwnerPath}/${logId}` : logOwnerPath;
 
   };
 }

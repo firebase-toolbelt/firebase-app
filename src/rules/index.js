@@ -1,6 +1,6 @@
-const { writeFile } = require('fs');
+import { writeFile } from 'fs';
 
-module.exports = function generateRules(paths, owners) {
+export default function generateRules(paths, owners) {
   let rulesObj = {};
   const ownerKeys = Object.keys(owners);
 

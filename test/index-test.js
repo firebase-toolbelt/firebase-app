@@ -9,8 +9,7 @@ describe('getActionUpdates', () => {
     applyAction
   } = getHelpers({
     owners: {
-      'user': 'userId',
-      'post': 'postId'
+      'user': 'userId'
     }
   });
 
@@ -35,8 +34,7 @@ describe('getActionUpdates', () => {
       const logPath = getLogPath(createUser, { userId }, 'user', logId);
 
       expect(updates).toContainKey(`users/${returnables.userId}`);
-      expect(updates).toContainKey(logPath.actions);
-      expect(updates).toContainKey(logPath.list);
+      expect(updates).toContainKey(logPath);
         
       expect(returnables).toContainKey('userId');
       expect(returnables).toContainKey('logId/user');
