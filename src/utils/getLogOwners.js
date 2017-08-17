@@ -3,12 +3,12 @@
  * Every action will also store it's payload on it's owners logs.
  */
 
-import validate from 'validate-properties';
-import mapValues from 'lodash/mapValues';
-import isString from 'lodash/isString';
-import isFunction from 'lodash/isFunction';
+const validate = require('validate-properties');
+const mapValues = require('lodash/mapValues');
+const isString = require('lodash/isString');
+const isFunction = require('lodash/isFunction');
 
-export default function getLogOwners(config) {
+module.exports = function getLogOwners(config) {
   if (!config.owners) return {};
 
   /**

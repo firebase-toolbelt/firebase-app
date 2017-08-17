@@ -1,9 +1,9 @@
-import validate from 'validate-properties';
-import buildGetLogUpdates from './utils/getLogUpdates';
-import defaultCreateId from './utils/defaultCreateId';
-import parseUpdates from './utils/parseUpdates';
+const validate = require('validate-properties');
+const buildGetLogUpdates = require('./utils/getLogUpdates');
+const defaultCreateId = require('./utils/defaultCreateId');
+const parseUpdates = require('./utils/parseUpdates');
 
-export default function buildGetActionUpdates(config, logOwners, getLogPath) {
+module.exports = function buildGetActionUpdates(config, logOwners, getLogPath) {
 
   /**
    * Use firebase for id creation

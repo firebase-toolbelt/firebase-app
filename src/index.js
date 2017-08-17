@@ -1,10 +1,10 @@
-import buildGetActionUpdates from './actions/getActionUpdates';
-import buildExecuteAction from './actions/executeAction';
-import buildApplyAction from './actions/applyAction';
-import buildGetLogPath from './actions/utils/getLogPath';
-import getLogOwners from './actions/utils/getLogOwners';
+const buildGetActionUpdates = require('./actions/getActionUpdates');
+const buildExecuteAction = require('./actions/executeAction');
+const buildApplyAction = require('./actions/applyAction');
+const buildGetLogPath = require('./utils/getLogPath');
+const getLogOwners = require('./utils/getLogOwners');
 
-export default function getHelpers(config) {
+module.exports = function getHelpers(config) {
 
 	const logOwners = getLogOwners(config);
 	const getLogPath = buildGetLogPath(config, logOwners);

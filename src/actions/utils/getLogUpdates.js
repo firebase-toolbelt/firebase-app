@@ -1,4 +1,4 @@
-export default function buildGetLogUpdates(getLogPath, createId) {
+module.exports = function buildGetLogUpdates(getLogPath, createId) {
   return function getLogUpdates(action, payload, helpers) {
 
     /**
@@ -26,7 +26,7 @@ export default function buildGetLogUpdates(getLogPath, createId) {
       const parsedPayload = action.logOmit
         ? omit(payload, action.logOmit) : payload;
 
-      const logPath = getLogPath(action, payload, ownerId, logId, action.logHidden);
+      const logPath = getLogPath(payload, ownerId, logId, action.logHidden);
 
       acc[logPath] = {
         __action: action.id,

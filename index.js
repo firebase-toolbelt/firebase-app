@@ -4,10 +4,12 @@ const program = require('commander');
 const buildGenerateRules = require(__dirname + '/src/rules');
 
 program
-	.arguments('<ruleSource>')
-	.action(function(ruleSource) {
-	  buildGenerateRules(ruleSource).then(rules => {
-	  	console.log(rules);
-	  });
+	.arguments('<ruleConfigSource>')
+	.action(function(ruleConfigSource) {
+
+		const ruleConfig = require(`${process.cwd()}/${ruleConfigSource}`);
+	  const rules = buildGenerateRules(ruleConfig);
+  	console.log(rules);
+
 	})
 	.parse(process.argv);

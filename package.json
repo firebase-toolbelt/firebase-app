@@ -20,6 +20,7 @@
   "license": "BSD-2-Clause",
   "dependencies": {
     "commander": "^2.11.0",
+    "firebase-rules": "^1.0.1",
     "glob": "^7.1.2",
     "lodash": "^4.17.4",
     "validate-properties": "^1.0.0"

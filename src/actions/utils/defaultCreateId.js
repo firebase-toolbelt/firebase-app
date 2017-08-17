@@ -4,6 +4,6 @@
 
 let id = 0;
 
-export default function defaultCreateId() {
+module.exports = function defaultCreateId() {
   return id++;
 };

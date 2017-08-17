@@ -1,6 +1,6 @@
-import paths from '../paths/paths';
+const paths = require('../paths/paths');
 
-export default {
+module.exports = {
 
   createUser: {
     id: 'createUser',

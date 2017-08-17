@@ -1,6 +1,6 @@
-import set from 'lodash/fp/set';
+const set = require('lodash/fp/set');
 
-export default function buildApplyAction(config, getActionUpdates) {
+module.exports = function buildApplyAction(config, getActionUpdates) {
   
   return function applyAction(action, payload, target = {}) {
     

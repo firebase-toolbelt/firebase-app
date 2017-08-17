@@ -1,23 +1,21 @@
-const readAllFiles = require('./_readAllFiles');
-const generateRules = require('./_generateRules');
+const getAllFiles = require('./utils/getAllFiles');
+const generateRules = require('./utils/generateRules');
+const getLogOwners = require('../utils/getLogOwners');
+const buildGetLogPath = require('../utils/getLogPath');
 
-module.exports = function buildGenerateRules(ruleSource) {
+module.exports = function buildGenerateRules(config) {
   let rulesObj = {};
 
-  return new Promise((resolve, reject) => {
-    readAllFiles(ruleSource).then(files => {
-      files.forEach((file, i) => {
+  const ruleSource = config.rules || 'src/**/*.rules.js';
+  const filePaths = getAllFiles(ruleSource);
 
-        let fileRules = require(`../../${file}`);
+  const logOwners = getLogOwners(config);
+  const getLogPath = buildGetLogPath(config, logOwners);
 
-        generateRules(fileRules, rulesObj).then(() => {
-          if ((i + 1) == files.length) {
-            rulesObj['__setup__'] = null;
-            resolve(rulesObj);
-          }
-        });
-
-      })
-    });
+  filePaths.forEach((filePath) => {
+    const fileRules = require(filePath);
+    rulesObj = generateRules(fileRules, rulesObj, config, logOwners, getLogPath);
   });
+
+  return rulesObj;
 }

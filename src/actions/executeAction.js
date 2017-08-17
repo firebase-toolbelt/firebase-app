@@ -1,4 +1,4 @@
-export default function buildExecuteAction(config, getActionUpdates) {
+module.exports = function buildExecuteAction(config, getActionUpdates) {
   
   if (!config.firebase) return null;
 

@@ -6,7 +6,7 @@
  * - a simple update object
  */
 
-export default function parseUpdates(updates) {
+module.exports = function parseUpdates(updates) {
   return Promise.resolve(updates)
     .then((result) => (result.length) ? Object.assign({}, ...result) : result);
 }

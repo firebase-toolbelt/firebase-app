@@ -1,16 +1,17 @@
-export default function buildGetLogPath(config, logOwners) {
+module.exports = function buildGetLogPath(config, logOwners) {
 
   const basePath = config.logBasePath || '__log__';
   const hiddenPath = config.logHiddenPath || '__log_hidden__';
   const blankOwner = config.logBlankPath || '__';
 
-  return function getLogPath(action, payload, _ownerId, logId, isHidden) {
+  return function getLogPath(payload, _ownerId, logId, isHidden, payloadIsPath) {
     
     const ownerId = _ownerId || blankOwner;
+    const ownerPath = payloadIsPath ? payload : owner.path(payload);
 
     const owner = logOwners[ownerId];
     const logBasePath = isHidden ? hiddenPath : basePath;
-    const logOwnerPath = `${logBasePath}/${ownerId}/${owner.path(payload)}`;
+    const logOwnerPath = `${logBasePath}/${ownerId}/${ownerPath}`;
 
     return (logId) ? `${logOwnerPath}/${logId}` : logOwnerPath;
 
