@@ -1,11 +1,16 @@
-const { anyCondition } = require('firebase-rules/helpers/conditions');
 const { hasChildren } = require('firebase-rules/helpers/common');
 
 module.exports = {
-	'.validate': anyCondition(
-		hasChildren(['__authUserId', '__timestamp', '__action', 'action']),
-		`newData.child('__authUserId').val() == auth.uid`,
-		`newData.child('__timestamp').val() <= now`,
-		`newData.child('action').child(newData.child('__action')).exists()`
-	)
+	root: {
+		'.validate': hasChildren(['__authUserId', '__timestamp', '__action', 'action'])
+	},
+	authUserId: {
+		'.validate': `newData.val() == auth.uid`
+	},
+	timestamp: {
+		'.validate': `newData.val() <= now`
+	},
+	action: {
+		'.validate': `newData.parent().child('action').child(newData.val()).exists()`
+	}
 };

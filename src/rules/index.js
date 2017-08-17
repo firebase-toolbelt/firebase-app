@@ -2,11 +2,13 @@ const getAllFiles = require('./utils/getAllFiles');
 const generateRules = require('./utils/generateRules');
 const getLogOwners = require('../utils/getLogOwners');
 const buildGetLogPath = require('../utils/getLogPath');
+const update = require('lodash/update');
 
-module.exports = function buildGenerateRules(config) {
-  let rulesObj = {};
+module.exports = function buildGenerateRules(config, commandSource) {
+	let rulesObj = {};
+  let rulesByPathObj = {};
 
-  const ruleSource = config.rules || 'src/**/*.rules.js';
+  const ruleSource = config.rules || commandSource + '/src/**/*.rules.js';
   const filePaths = getAllFiles(ruleSource);
 
   const logOwners = getLogOwners(config);
@@ -14,8 +16,15 @@ module.exports = function buildGenerateRules(config) {
 
   filePaths.forEach((filePath) => {
     const fileRules = require(filePath);
-    rulesObj = generateRules(fileRules, rulesObj, config, logOwners, getLogPath);
+    rulesByPathObj = generateRules(fileRules, rulesByPathObj, config, logOwners, getLogPath);
   });
+
+
+  Object.keys(rulesByPathObj).forEach((path) => {
+  	const pathRules = rulesByPathObj[path];
+  	const pathArr = path.split('/').filter((subpath) => subpath && subpath.length);
+  	update(rulesObj, pathArr, (rules) => rules ? Object.assign({}, rules, pathRules) : pathRules);
+  })
 
   return rulesObj;
 }

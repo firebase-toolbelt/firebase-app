@@ -36,7 +36,10 @@ function generateRulesForOwner(rulesObj, ruleKey, ruleValue, config, logOwners, 
   logParentPaths.forEach((logParentPath) => {
     const logPath = `${logParentPath}/$logId`;
     rulesObj[logParentPath] = getDefaultPathRules(ruleValue);
-    rulesObj[logPath] = ownerMetaChildrenRules;
+    rulesObj[logPath] = ownerMetaChildrenRules.root;
+    rulesObj[logPath]['__authUserId'] = ownerMetaChildrenRules.authUserId;
+    rulesObj[logPath]['__timestamp'] = ownerMetaChildrenRules.timestamp;
+    rulesObj[logPath]['__action'] = ownerMetaChildrenRules.action;
   });
 
 }
