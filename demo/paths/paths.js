@@ -17,6 +17,6 @@
   tagPosts: (tagId) => `tagPosts/${tagId}`,
   tagPost: (tagId, postId) => `tagPosts/${tagId}/${postId}`,
 
-  userPosts: (userId) => `userPosts/${userId}`,
+  userPosts: (userId) => `userPosts/${userId}`
 
 };

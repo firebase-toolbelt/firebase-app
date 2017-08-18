@@ -10,10 +10,17 @@ program
 
 		const commandSource = process.cwd();
 		const ruleConfig = require(`${commandSource}/${ruleConfigSource}`);
-	  const rules = buildGenerateRules(ruleConfig, commandSource);
+		
+	  const { 
+	  	rules, 
+	  	totalPaths, 
+	  	totalPathsWithRules
+	  } = buildGenerateRules(ruleConfig, commandSource);
 
-	  writeFile(commandSource + '/rules.json', JSON.stringify(rules), function (err) {
+	  writeFile(commandSource + '/rules.json', JSON.stringify({ rules: rules }), function (err) {
 	  	if (!err) {
+	  		console.log('total paths: ' + totalPaths);
+	  		console.log('total paths with rules: ' + totalPathsWithRules);
 	  		console.log('File created in ' + commandSource + '/rules.json');
 	  	} else {
 	  		console.log('Error to create rules.json file');
