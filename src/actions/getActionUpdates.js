@@ -46,7 +46,7 @@ module.exports = function buildGetActionUpdates(config, logOwners, getLogPath) {
       [].concat(action.create).forEach((propName) => {
         const newId = createId();
         returnables[propName] = newId;
-        payload = { ...payload, [propName]: newId };
+        payload = Object.assign({}, payload, { [propName]: newId });
       });
     }
 
@@ -97,10 +97,10 @@ module.exports = function buildGetActionUpdates(config, logOwners, getLogPath) {
      * Create and parse action updates.
      * Then merge them with the automatically generated log updates.
      */
-
+    
     return parseUpdates(action.updates(payload, helpers))
       .then((updates) => ({
-        updates: { ...updates, ...getLogUpdates(action, payload, helpers) },
+        updates: Object.assign({}, updates, getLogUpdates(action, payload, helpers)),
         returnables: returnables
       }));
     

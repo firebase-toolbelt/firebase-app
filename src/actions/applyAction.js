@@ -3,7 +3,6 @@ const set = require('lodash/fp/set');
 module.exports = function buildApplyAction(config, getActionUpdates) {
   
   return function applyAction(action, payload, target = {}) {
-    
     return getActionUpdates(action, payload).then(({ updates }) => {
       
       config.onGetUpdates && config.onGetUpdates(updates);
@@ -14,6 +13,8 @@ module.exports = function buildApplyAction(config, getActionUpdates) {
       });
 
       return newTarget;
+
     });
   };
+
 }

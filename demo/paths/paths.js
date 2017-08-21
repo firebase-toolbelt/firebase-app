@@ -3,7 +3,7 @@
   users: 'users',
   user: (userId) => `users/${userId}`,
   userName: (userId) => `users/${userId}/name`,
-  userEmail: (userId) => `users/${userId}/name`,
+  userEmail: (userId) => `users/${userId}/email`,
   
   posts: 'posts',
   post: (postId) => `posts/${postId}`,

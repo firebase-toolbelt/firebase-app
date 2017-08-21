@@ -7,9 +7,9 @@ module.exports = function buildGetLogPath(config, logOwners) {
   return function getLogPath(payload, _ownerId, logId, isHidden, payloadIsPath) {
     
     const ownerId = _ownerId || blankOwner;
-    const ownerPath = payloadIsPath ? payload : owner.path(payload);
-
     const owner = logOwners[ownerId];
+
+    const ownerPath = payloadIsPath ? payload : owner.path(payload);
     const logBasePath = isHidden ? hiddenPath : basePath;
     const logOwnerPath = `${logBasePath}/${ownerId}/${ownerPath}`;
 
