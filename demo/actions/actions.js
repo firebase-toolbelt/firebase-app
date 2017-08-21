@@ -5,6 +5,7 @@ module.exports = {
   createUser: {
     id: 'createUser',
     log: ['user'],
+    create: 'userId',
     validate: ['name', 'email'],
     updates: (payload) => ({
       [paths.user(payload.userId)]: {

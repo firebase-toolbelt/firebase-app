@@ -78,9 +78,8 @@ module.exports = function generateRules(_fileRules, rulesObj, config, logOwners,
   );
 
   let newRulesObj = Object.assign({}, rulesObj);
-  const fileRulesKeys = Object.keys(fileRules);
 
-  fileRulesKeys.forEach((ruleKey) => {
+  Object.keys(fileRules).forEach((ruleKey) => {
     ruleGenerator(
       newRulesObj,
       ruleKey,
