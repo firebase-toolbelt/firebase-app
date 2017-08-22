@@ -6,17 +6,17 @@ const expect = require('expect');
 const getHelpers = require('../../src');
 const { createUser, updateUserName } = require('../actions/actions');
 
+const {
+  applyAction
+} = getHelpers({
+  owners: { 
+    'user': 'userId' 
+  }
+});
+
 describe('mockDatabase', () => {
 
   let db = {};
-
-  const {
-    applyAction
-  } = getHelpers({
-    owners: { 
-      'user': 'userId' 
-    }
-  });
 
   it('should generate user updates object', () => {
 
@@ -29,8 +29,8 @@ describe('mockDatabase', () => {
 
       db = Object.assign({}, mockedDatabase);
 
-      expect(db).toInclude({
-        users: [actionPayload]
+      expect(db.users).toInclude({
+        '0': actionPayload
       });
       expect(db).toIncludeKey('__log__');
 
@@ -41,6 +41,7 @@ describe('mockDatabase', () => {
   it('should update db with user updates object', () => {
 
     const actionPayload = {
+      userId: 0,
       value: 'user name 2'
     };
 
@@ -48,9 +49,11 @@ describe('mockDatabase', () => {
 
       db = Object.assign({}, db, mockedDatabase);
 
-      expect(db.user).toInclude([{
-        name: actionPayload.value 
-      }]);
+      expect(db.users).toInclude({
+        [actionPayload.userId]: {
+          name: actionPayload.value
+        }
+      });
 
     });
 

@@ -1,8 +1,9 @@
-const { hasChildren } = require('firebase-rules/helpers/common');
+const { newDataHasChildren } = require('firebase-rules/helpers/common');
 
 module.exports = {
 	root: {
-		'.validate': hasChildren(['__authUserId', '__timestamp', '__action', 'action'])
+		'.write': 'true',
+		'.validate': newDataHasChildren(['__authUserId', '__timestamp', '__action', 'action'])
 	},
 	authUserId: {
 		'.validate': `newData.val() == auth.uid`
