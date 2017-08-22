@@ -10,6 +10,7 @@ module.exports = {
   [paths.users]: 'auth.uid != null',
 
   [paths.user('$userId')]: {
+    write: 'true',
     validate: `newData.hasChildren(['name', 'email'])`
   },
   [paths.userName('$userId')]: {

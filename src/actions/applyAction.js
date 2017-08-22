@@ -1,4 +1,4 @@
-const set = require('lodash/fp/set');
+const setWith = require('lodash/setWith');
 
 module.exports = function buildApplyAction(config, getActionUpdates) {
   
@@ -9,7 +9,7 @@ module.exports = function buildApplyAction(config, getActionUpdates) {
 
       let newTarget = target;
       Object.keys(updates).forEach((path) => {
-        newTarget = set(path.split('/'), updates[path])(newTarget);
+        newTarget = setWith(newTarget, path.split('/'), updates[path], Object);
       });
 
       return newTarget;

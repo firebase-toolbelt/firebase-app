@@ -1,6 +1,5 @@
 const omit = require('lodash/fp/omit');
-const mapKeys = require('lodash/fp/mapKeys');
-const flow = require('lodash/fp/flow');
+const mapKeys = require('lodash/mapKeys');
 const isArray = require('lodash/isArray');
 const isString = require('lodash/isString');
 const ownerMetaChildrenRules = require('./ownerMetaChildrenRules');
@@ -12,10 +11,7 @@ function getDefaultPathRules(ruleValue) {
   if (isString(ruleValue)) {
     return { '.read': ruleValue };
   } else {
-    return flow(
-      omit('write'),
-      mapKeys((key) => `.${key}`)
-    )(ruleValue);
+    return mapKeys(ruleValue, (value, key) => `.${key}`);
   }
 }
 

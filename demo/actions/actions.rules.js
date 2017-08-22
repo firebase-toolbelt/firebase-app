@@ -4,8 +4,8 @@
 
 const paths = require('../paths/paths');
 
-const userIdIsAuth = `newData.child('userId') == auth.uid`;
-const postWasCreatedByUser = `root.child(${paths.postCreatedBy('$postId')}).val() == auth.uid`;
+const userIdIsAuth = `newData.child('userId').val() == auth.uid`;
+const postWasCreatedByUser = `root.child(\'${paths.postCreatedBy('$postId')}\').val() == auth.uid`;
 
 module.exports = {
   __setup__: 'actions',
