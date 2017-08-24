@@ -5,7 +5,7 @@ const buildGetLogPath = require('../utils/getLogPath');
 const update = require('lodash/update');
 
 module.exports = function generateRules(config, commandSource) {
-	let rulesObj = {};
+  let rulesObj = {};
   let rulesByPathObj = {};
   let rulesGenerated = {};
 
@@ -41,7 +41,6 @@ module.exports = function generateRules(config, commandSource) {
 
   return { 
     rules: rulesObj,
-    totalPaths: rulesGenerated.totalPaths,
-    totalPathsWithRules: rulesGenerated.totalPathsWithRules
+    coverage: rulesGenerated.coverage
   };
 }

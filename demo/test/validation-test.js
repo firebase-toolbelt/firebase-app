@@ -8,7 +8,7 @@ const getHelpers = require('../../src');
 const { createUser, updateUserName } = require('../actions/actions');
 
 const { expect } = chai;
-const rules = targaryen.json.loadSync(__dirname + '/../rules.json');
+const rules = targaryen.json.loadSync(__dirname + '/../database.rules.json');
 chai.use(targaryen);
 
 const {

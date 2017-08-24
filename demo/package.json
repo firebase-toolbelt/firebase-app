@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha ./test"
+    "test": "app ./rules.config.js && mocha ./test"
   },
   "author": "",
   "license": "ISC",
