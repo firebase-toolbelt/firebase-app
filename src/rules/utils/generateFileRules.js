@@ -45,7 +45,6 @@ function generateRulesForOwner(rulesObj, ruleKey, ruleValue, config, logOwners, 
   });
 
   totalPathsWithRules += getPathsWithRules(config.owners, ruleKey);
-
 }
 
 function generateRulesForAction(rulesObj, ruleKey, ruleValue, config, logOwners, getLogPath) {
@@ -65,7 +64,7 @@ function generateRulesForAction(rulesObj, ruleKey, ruleValue, config, logOwners,
   totalPathsWithRules += getPathsWithRules(config.actions, ruleKey);
 }
 
-module.exports = function generateRules(_fileRules, rulesObj, config, logOwners, getLogPath) {
+module.exports = function generateFileRules(_fileRules, rulesObj, config, logOwners, getLogPath) {
 
   const setup = _fileRules.__setup__;
   const defaultRules = _fileRules.__default__;
@@ -100,5 +99,4 @@ module.exports = function generateRules(_fileRules, rulesObj, config, logOwners,
     totalPaths,
     totalPathsWithRules
   };
-
 }

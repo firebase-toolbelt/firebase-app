@@ -1,10 +1,10 @@
 const getAllFiles = require('./utils/getAllFiles');
-const generateRules = require('./utils/generateRules');
+const generateFileRules = require('./utils/generateFileRules');
 const getLogOwners = require('../utils/getLogOwners');
 const buildGetLogPath = require('../utils/getLogPath');
 const update = require('lodash/update');
 
-module.exports = function buildGenerateRules(config, commandSource) {
+module.exports = function generateRules(config, commandSource) {
 	let rulesObj = {};
   let rulesByPathObj = {};
   let rulesGenerated = {};
@@ -17,7 +17,7 @@ module.exports = function buildGenerateRules(config, commandSource) {
 
   filePaths.forEach((filePath) => {
     const fileRules = require(filePath);
-    rulesGenerated = generateRules(fileRules, rulesByPathObj, config, logOwners, getLogPath);
+    rulesGenerated = generateFileRules(fileRules, rulesByPathObj, config, logOwners, getLogPath);
     rulesByPathObj = rulesGenerated.rules;
   });
 
