@@ -24,6 +24,7 @@ module.exports = {
   },
 
   updateUserEmail: {
+    id: 'updateUserEmail',
     log: ['user'],
     validate: ['value'],
     updates: (payload) => ({

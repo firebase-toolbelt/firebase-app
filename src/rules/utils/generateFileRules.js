@@ -4,6 +4,9 @@ const flow = require('lodash/fp/flow');
 const isArray = require('lodash/isArray');
 const isString = require('lodash/isString');
 const ownerMetaChildrenRules = require('./ownerMetaChildrenRules');
+const getPathsWithRules = require('./getPathsWithRules');
+
+let totalPathsWithRules = 0;
 
 function getDefaultPathRules(ruleValue) {
   if (isString(ruleValue)) {
@@ -32,7 +35,6 @@ function generateRulesForOwner(rulesObj, ruleKey, ruleValue, config, logOwners, 
     )
   ));
 
-
   logParentPaths.forEach((logParentPath) => {
     const logPath = `${logParentPath}/$logId`;
     rulesObj[logParentPath] = getDefaultPathRules(ruleValue);
@@ -42,6 +44,7 @@ function generateRulesForOwner(rulesObj, ruleKey, ruleValue, config, logOwners, 
     rulesObj[logPath]['__action'] = ownerMetaChildrenRules.action;
   });
 
+  totalPathsWithRules += getPathsWithRules(config.owners, ruleKey);
 }
 
 function generateRulesForAction(rulesObj, ruleKey, ruleValue, config, logOwners, getLogPath) {
@@ -57,15 +60,15 @@ function generateRulesForAction(rulesObj, ruleKey, ruleValue, config, logOwners,
     rulesObj[actionPath] = { '.write': ruleValue };
     
   });
+
+  totalPathsWithRules += getPathsWithRules(config.actions, ruleKey);
 }
 
-module.exports = function generateRules(_fileRules, rulesObj, config, logOwners, getLogPath) {
+module.exports = function generateFileRules(_fileRules, rulesObj, config, logOwners, getLogPath) {
 
   const setup = _fileRules.__setup__;
   const defaultRules = _fileRules.__default__;
   const fileRules = omit(['__setup__', '__default__'])(_fileRules);
-
-  let newRulesObj = Object.assign({}, rulesObj);
 
   const ruleGenerator = (
     (setup === 'owners') ? generateRulesForOwner :
@@ -73,7 +76,10 @@ module.exports = function generateRules(_fileRules, rulesObj, config, logOwners,
       generateRulesForPath
   );
 
-  Object.keys(fileRules).forEach((ruleKey) => {
+  let newRulesObj = Object.assign({}, rulesObj);
+  const fileRulesKeys = Object.keys(fileRules);
+
+  fileRulesKeys.forEach((ruleKey) => {
     ruleGenerator(
       newRulesObj,
       ruleKey,
@@ -84,6 +90,13 @@ module.exports = function generateRules(_fileRules, rulesObj, config, logOwners,
     );
   });
 
-  return newRulesObj;
+  const ownersLength = Object.keys(config.owners).length;
+  const actionsLength = Object.keys(config.actions).length;
+  const totalPaths = ownersLength + actionsLength;
 
+  return { 
+    rules: newRulesObj,
+    totalPaths,
+    totalPathsWithRules
+  };
 }
