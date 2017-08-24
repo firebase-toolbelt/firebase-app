@@ -2,7 +2,7 @@
 
 const program = require('commander');
 const { writeFile } = require('fs');
-const buildGenerateRules = require(__dirname + '/src/rules');
+const generateRules = require(__dirname + '/src/rules');
 
 program
 	.arguments('<rulesConfigSource>')
@@ -15,7 +15,7 @@ program
 	  	rules, 
 	  	totalPaths, 
 	  	totalPathsWithRules
-		} = buildGenerateRules(ruleConfig, commandSource);
+		} = generateRules(ruleConfig, commandSource);
 		
 		let total = totalPaths || 0;
 		let covered = totalPathsWithRules || 0;
