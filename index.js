@@ -13,24 +13,22 @@ program
 		
 	  const { 
 	  	rules, 
-	  	totalPaths, 
-	  	totalPathsWithRules
-		} = generateRules(ruleConfig, commandSource);
+	  	coverage 
+	  } = generateRules(ruleConfig, commandSource);
 		
-		let total = totalPaths || 0;
-		let covered = totalPathsWithRules || 0;
-		let coverage = totalPaths ? totalPathsWithRules / totalPaths : 0;
-		coverage = `${coverage * 100}%`;
+		const {
+			covered,
+	  	total,
+	  	percentage
+		} = coverage;
 
 	  writeFile(commandSource + '/database.rules.json', JSON.stringify({ rules }), function (err) {
 	  	if (!err) {
-	  		console.log(`Paths coverage: ${covered} of ${total} (${coverage})`);
+	  		console.log(`Paths coverage: ${covered} of ${total} (${percentage})`);
 	  		console.log('File created in ' + commandSource + '/database.rules.json');
 	  	} else {
 	  		console.warn('Error creating rules.json file.');
 	  	}
-
-	  	process.exit(1);
 	  });
 
 	})

@@ -4,7 +4,7 @@
 /lib
 /node_modules
 /demo/node_modules
-/demo/rules.json
+/demo/database.rules.json
 /umd
-rules.json
+database.rules.json
 npm-debug.log*

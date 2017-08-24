@@ -3,9 +3,7 @@ const mapKeys = require('lodash/mapKeys');
 const isArray = require('lodash/isArray');
 const isString = require('lodash/isString');
 const ownerMetaChildrenRules = require('./ownerMetaChildrenRules');
-const getPathsWithRules = require('./getPathsWithRules');
-
-let totalPathsWithRules = 0;
+const checkRulesCoverage = require('./checkRulesCoverage');
 
 /**
  * If ruleValue in path file is string
@@ -59,7 +57,6 @@ function generateRulesForOwner(rulesObj, ruleKey, ruleValue, config, logOwners, 
     rulesObj[logPath]['__action'] = ownerMetaChildrenRules.action;
   });
 
-  totalPathsWithRules += getPathsWithRules(config.owners, ruleKey);
 }
 
 /**
@@ -82,8 +79,6 @@ function generateRulesForAction(rulesObj, ruleKey, ruleValue, config, logOwners,
     rulesObj[actionPath] = { '.write': ruleValue };
     
   });
-
-  totalPathsWithRules += getPathsWithRules(config.actions, ruleKey);
 }
 
 module.exports = function generateFileRules(_fileRules, rulesObj, config, logOwners, getLogPath) {
@@ -119,13 +114,10 @@ module.exports = function generateFileRules(_fileRules, rulesObj, config, logOwn
    * Count all paths existing and all paths the have rules
    */
 
-  const ownersLength = Object.keys(config.owners).length;
-  const actionsLength = Object.keys(config.actions).length;
-  const totalPaths = ownersLength + actionsLength;
+  const coverage = checkRulesCoverage(setup, config, fileRules);
 
   return { 
     rules: newRulesObj,
-    totalPaths,
-    totalPathsWithRules
+    coverage
   };
 }
