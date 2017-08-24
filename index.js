@@ -5,25 +5,29 @@ const { writeFile } = require('fs');
 const buildGenerateRules = require(__dirname + '/src/rules');
 
 program
-	.arguments('<ruleConfigSource>')
-	.action(function(ruleConfigSource) {
+	.arguments('<rulesConfigSource>')
+	.action(function(rulesConfigSource) {
 
 		const commandSource = process.cwd();
-		const ruleConfig = require(`${commandSource}/${ruleConfigSource}`);
+		const ruleConfig = require(`${commandSource}/${rulesConfigSource}`);
 		
 	  const { 
 	  	rules, 
 	  	totalPaths, 
 	  	totalPathsWithRules
-	  } = buildGenerateRules(ruleConfig, commandSource);
+		} = buildGenerateRules(ruleConfig, commandSource);
+		
+		let total = totalPaths || 0;
+		let covered = totalPathsWithRules || 0;
+		let coverage = totalPaths ? totalPathsWithRules / totalPaths : 0;
+		coverage = `${coverage * 100}%`;
 
-	  writeFile(commandSource + '/rules.json', JSON.stringify({ rules: rules }), function (err) {
+	  writeFile(commandSource + '/database.rules.json', JSON.stringify({ rules }), function (err) {
 	  	if (!err) {
-	  		console.log('total paths: ' + totalPaths);
-	  		console.log('total paths with rules: ' + totalPathsWithRules);
-	  		console.log('File created in ' + commandSource + '/rules.json');
+	  		console.log(`Paths coverage: ${covered} of ${total} (${coverage})`);
+	  		console.log('File created in ' + commandSource + '/database.rules.json');
 	  	} else {
-	  		console.log('Error to create rules.json file');
+	  		console.warn('Error creating rules.json file.');
 	  	}
 
 	  	process.exit(1);
