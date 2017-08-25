@@ -1,19 +1,25 @@
 const omit = require('lodash/fp/omit');
-const mapKeys = require('lodash/mapKeys');
+const mapKeys = require('lodash/fp/mapKeys');
+const flow = require('lodash/fp/flow');
 const isArray = require('lodash/isArray');
 const isString = require('lodash/isString');
 const ownerMetaChildrenRules = require('./ownerMetaChildrenRules');
+const pathWriteRules = require('./pathWriteRules');
 
 /**
- * If ruleValue in path file is string create read rule
- * otherwise create rule object especified in path file
+ * Default path rule that accepts both string and object inputs.
+ * Strings are automatically turned into read values.
+ * Objects are mapped and write values are omitted.
  */
 
 function getDefaultPathRules(ruleValue) {
   if (isString(ruleValue)) {
     return { '.read': ruleValue };
   } else {
-    return mapKeys(ruleValue, (value, key) => `.${key}`);
+    return flow(
+      omit('write'),
+      mapKeys((key) => `.${key}`)
+    )(ruleValue);
   }
 }
 
@@ -21,8 +27,8 @@ function getDefaultPathRules(ruleValue) {
  * Generate rules for path files
  */
 
-function generateRulesForPath(rulesObj, ruleKey, ruleValue) {
-  rulesObj[ruleKey] = getDefaultPathRules(ruleValue);
+function generateRulesForPath(rulesObj, ruleKey, ruleValue, config) {
+  rulesObj[ruleKey] = Object.assign({}, getDefaultPathRules(ruleValue), pathWriteRules(config));
 }
 
 /**

@@ -1,8 +1,10 @@
+const { LOG_PATH, LOG_HIDDEN_PATH, LOG_BLANK_PATH } = require('./constants');
+
 module.exports = function buildGetLogPath(config, logOwners) {
 
-  const basePath = config.logBasePath || '__log__';
-  const hiddenPath = config.logHiddenPath || '__log_hidden__';
-  const blankOwner = config.logBlankPath || '__';
+  const basePath = config.logBasePath || LOG_PATH;
+  const hiddenPath = config.logHiddenPath || LOG_HIDDEN_PATH;
+  const blankOwner = config.logBlankPath || LOG_BLANK_PATH;
 
   return function getLogPath(payload, _ownerId, logId, isHidden, payloadIsPath) {
     
