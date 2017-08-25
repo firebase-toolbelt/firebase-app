@@ -1,36 +1,28 @@
 const getAllFiles = require('./utils/getAllFiles');
-const generateFileRules = require('./utils/generateFileRules');
-const getLogOwners = require('../utils/getLogOwners');
-const buildGetLogPath = require('../utils/getLogPath');
+const generateRulesForFile = require('./utils/generateRulesForFile');
 const update = require('lodash/update');
 
-module.exports = function generateRules(config, commandSource) {
+module.exports = function generateRules(config, logOwners, getLogPath, commandSource) {
   let rulesObj = {};
   let rulesByPathObj = {};
-  let rulesGenerated = {};
 
   /**
-   * Get all rules files paths, logOwners and logPath function
+   * Get all rule files.
    */
 
-  const ruleSource = config.rules || commandSource + '/src/**.rules.js';
-  const filePaths = getAllFiles(ruleSource);
-
-  const logOwners = getLogOwners(config);
-  const getLogPath = buildGetLogPath(config, logOwners);
+  const rulesSource = config.rules || commandSource + '/src/**.rules.js';
+  const filePaths = getAllFiles(rulesSource);
 
   /**
-   * Generate rules in each files path
+   * Generate rules for each rule file.
    */
 
-  filePaths.forEach((filePath) => {
-    const fileRules = require(filePath);
-    rulesGenerated = generateFileRules(fileRules, rulesByPathObj, config, logOwners, getLogPath);
-    rulesByPathObj = rulesGenerated.rules;
-  });
+  filePaths.forEach(
+    generateRulesForFile(rulesByPathObj, config, logOwners, getLogPath)
+  );
 
   /**
-   * Update each rule path to a object format
+   * Update each rule path to an object format.
    */
 
   Object.keys(rulesByPathObj).forEach((path) => {
@@ -39,8 +31,6 @@ module.exports = function generateRules(config, commandSource) {
     update(rulesObj, pathArr, (rules) => rules ? Object.assign({}, rules, pathRules) : pathRules);
   })
 
-  return { 
-    rules: rulesObj,
-    coverage: rulesGenerated.coverage
-  };
+  return rulesObj;
+  
 }

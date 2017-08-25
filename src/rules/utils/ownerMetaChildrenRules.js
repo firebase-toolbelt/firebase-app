@@ -2,7 +2,7 @@ const { newDataHasChildren } = require('firebase-rules/helpers/common');
 
 module.exports = {
 	root: {
-		'.write': 'true',
+		'.write': `newData.children(\'__authUserId\').val() == auth.uid`,
 		'.validate': newDataHasChildren(['__authUserId', '__timestamp', '__action', 'action'])
 	},
 	authUserId: {
@@ -13,5 +13,8 @@ module.exports = {
 	},
 	action: {
 		'.validate': `newData.parent().child('action').child(newData.val()).exists()`
+	},
+	other: {
+		'.write': false
 	}
 };
