@@ -10,6 +10,8 @@
 
 const { writeFile } = require('fs');
 const program = require('commander');
+const getLogOwners = require(__dirname + '/src/utils/getLogOwners');
+const buildGetLogPath = require(__dirname + '/src/utils/getLogPath');
 const generateRules = require(__dirname + '/src/rules');
 const checkRulesCoverage = require(__dirname + '/src/rules/utils/checkRulesCoverage');
 
@@ -36,13 +38,16 @@ program
 		 * Generate the rules object.
 		 */
 
-		const rules = generateRules(config, logOwners, getLogPath, commandSource);
+		const { 
+			rules,
+			filePaths
+		} = generateRules(config, logOwners, getLogPath, commandSource);
 
 		/**
 		 * Check the rules coverage.
 		 */
 
-		const coverage = checkRulesCoverage(config, logOwners, getLogPath, rules);
+		const coverage = checkRulesCoverage(config, logOwners, getLogPath, rules, filePaths);
 
 		/**
 		 * Write file and print coverage reports.

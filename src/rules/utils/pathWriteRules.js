@@ -6,8 +6,8 @@ module.exports = function pathWriteRules(config) {
   const hiddenPath = config.logHiddenPath || LOG_HIDDEN_PATH;
   return {
     '.write': anyCondition(
-      `root.children(\'${basePath}\').val() !== newDataRoot().children(\'${basePath}\').val()`,
-      `root.children(\'${hiddenPath}\').val() !== newDataRoot().children(\'${hiddenPath}\').val()`
+      `root.child(\'${basePath}\').val() !== newDataRoot().child(\'${basePath}\').val()`,
+      `root.child(\'${hiddenPath}\').val() !== newDataRoot().child(\'${hiddenPath}\').val()`
     )
   };
 };

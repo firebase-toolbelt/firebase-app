@@ -104,11 +104,9 @@ module.exports = function generateRulesForFile(rulesObj, config, logOwners, getL
         generateRulesForPath
     );
   
-    let newRulesObj = Object.assign({}, rulesObj);
-  
     Object.keys(fileRules).forEach((ruleKey) => {
       ruleGenerator(
-        newRulesObj,
+        rulesObj,
         ruleKey,
         fileRules[ruleKey] || defaultRules,
         config,
@@ -117,7 +115,7 @@ module.exports = function generateRulesForFile(rulesObj, config, logOwners, getL
       );
     });
 
-    return newRulesObj;
+    return rulesObj;
 
   };
 }
