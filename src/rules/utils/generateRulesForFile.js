@@ -3,13 +3,12 @@ const mapKeys = require('lodash/mapKeys');
 const isArray = require('lodash/isArray');
 const isString = require('lodash/isString');
 const ownerMetaChildrenRules = require('./ownerMetaChildrenRules');
-const checkRulesCoverage = require('./checkRulesCoverage');
 
 /**
- * If ruleValue in path file is string
- * create read rule
- * Else create rule object especified in path file
+ * If ruleValue in path file is string create read rule
+ * otherwise create rule object especified in path file
  */
+
 function getDefaultPathRules(ruleValue) {
   if (isString(ruleValue)) {
     return { '.read': ruleValue };
@@ -21,6 +20,7 @@ function getDefaultPathRules(ruleValue) {
 /**
  * Generate rules for path files
  */
+
 function generateRulesForPath(rulesObj, ruleKey, ruleValue) {
   rulesObj[ruleKey] = getDefaultPathRules(ruleValue);
 }
@@ -28,6 +28,7 @@ function generateRulesForPath(rulesObj, ruleKey, ruleValue) {
 /**
  * Generate rules for owner files
  */
+
 function generateRulesForOwner(rulesObj, ruleKey, ruleValue, config, logOwners, getLogPath) {
 
   /**
@@ -55,6 +56,7 @@ function generateRulesForOwner(rulesObj, ruleKey, ruleValue, config, logOwners, 
     rulesObj[logPath]['__authUserId'] = ownerMetaChildrenRules.authUserId;
     rulesObj[logPath]['__timestamp'] = ownerMetaChildrenRules.timestamp;
     rulesObj[logPath]['__action'] = ownerMetaChildrenRules.action;
+    rulesObj[logPath]['$any'] = ownerMetaChildrenRules.other;
   });
 
 }
@@ -62,13 +64,10 @@ function generateRulesForOwner(rulesObj, ruleKey, ruleValue, config, logOwners, 
 /**
  * Generate rules for action files
  */
+
 function generateRulesForAction(rulesObj, ruleKey, ruleValue, config, logOwners, getLogPath) {
   const action = config.actions[ruleKey];
   const owners = action.log || [null];
-
-  /**
-   * Create write rule for action logs in each owner existing
-   */
 
   owners.forEach((ownerId) => {
 
@@ -81,43 +80,38 @@ function generateRulesForAction(rulesObj, ruleKey, ruleValue, config, logOwners,
   });
 }
 
-module.exports = function generateFileRules(_fileRules, rulesObj, config, logOwners, getLogPath) {
+module.exports = function generateRulesForFile(rulesObj, config, logOwners, getLogPath) {
+  return (filePath) => {
 
-  const setup = _fileRules.__setup__;
-  const defaultRules = _fileRules.__default__;
-  const fileRules = omit(['__setup__', '__default__'])(_fileRules);
-
-  /**
-   * Mount rules object for each action, owner and path files
-   */
-
-  const ruleGenerator = (
-    (setup === 'owners') ? generateRulesForOwner :
-    (setup === 'actions') ? generateRulesForAction :
-      generateRulesForPath
-  );
-
-  let newRulesObj = Object.assign({}, rulesObj);
-
-  Object.keys(fileRules).forEach((ruleKey) => {
-    ruleGenerator(
-      newRulesObj,
-      ruleKey,
-      fileRules[ruleKey] || defaultRules,
-      config,
-      logOwners,
-      getLogPath
+    let fileRules = require(filePath);
+    const setup = fileRules.__setup__;
+    const defaultRules = fileRules.__default__;
+    fileRules = omit(['__setup__', '__default__'])(fileRules);
+  
+    /**
+     * Mount rules object for each action, owner and path files
+     */
+  
+    const ruleGenerator = (
+      (setup === 'owners') ? generateRulesForOwner :
+      (setup === 'actions') ? generateRulesForAction :
+        generateRulesForPath
     );
-  });
+  
+    let newRulesObj = Object.assign({}, rulesObj);
+  
+    Object.keys(fileRules).forEach((ruleKey) => {
+      ruleGenerator(
+        newRulesObj,
+        ruleKey,
+        fileRules[ruleKey] || defaultRules,
+        config,
+        logOwners,
+        getLogPath
+      );
+    });
 
-  /**
-   * Count all paths existing and all paths the have rules
-   */
+    return newRulesObj;
 
-  const coverage = checkRulesCoverage(setup, config, fileRules);
-
-  return { 
-    rules: newRulesObj,
-    coverage
   };
 }

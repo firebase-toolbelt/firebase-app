@@ -1,45 +1,53 @@
-let covered = 0;
+/**
+ * Check if rules are created for each associated component.
+ */
 
-function getPathsWithRules(paths, fileRules) {
-	let pathWithRules = 0;
+module.exports = function checkRulesCoverage(config, logOwners, getLogPath, rules) {
 
-	Object.keys(fileRules).forEach(ruleKey => {
-		Object.keys(paths).forEach(pathId => {
+  let covered = 0;
+  let total = 0;
+  let percentage;
 
-	    if (pathId === ruleKey) {
-	      pathWithRules = pathWithRules + 1;
-	    }
+  /**
+   * Check path rules.
+   * Get root path for each defined path.
+   * Prevent double checking paths with the same root key.
+   */
 
-	  });
-	});
+  let pathRootKeys = {};
 
-  return pathWithRules;
-}
+  config.paths.forEach((pathKey) => {
 
-module.exports = function checkRulesCoverage(setup, config, fileRules) {
+    let pathRootKey;
+    (typeof pathKey === 'function') ? pathKey() : pathKey;
+    pathRootKey = pathRootKey.slice('/')[0];
+     
+    if (!pathRootKeys[pathRootKey]) {
+      total++;
+      if (rules[pathRootKey]) covered++;
+    } else {
+      pathRootKeys[pathRootKey] = true;
+    }
 
-	const {
-		owners,
-		actions
-	} = config;
+  });
 
-  if (setup == 'owners') {
-  	covered += getPathsWithRules(owners, fileRules);
-  } 
-  if (setup == 'actions') {
-  	covered += getPathsWithRules(actions, fileRules);
-  }
+  /**
+   * Check owner rules.
+   * [in progress]
+   */
 
-  const totalPaths = Object.keys(owners).length + Object.keys(actions).length;
+  /**
+   * Check action rules.
+   * [in progress]
+   */
 
-  const total = totalPaths || 0;
-	const coverage = totalPaths ? (covered / totalPaths) : 0;
-	const percentage = `${Math.round(coverage * 100)}%`;
+  const coverage = total ? (covered / total) : 0;
+  const percentage = `${Math.round(coverage * 100)}%`;
 
   return {
-  	covered,
-  	total,
-  	percentage
+    covered,
+    total,
+    percentage
   };
 
-}
+};
