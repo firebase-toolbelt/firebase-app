@@ -50,6 +50,19 @@ module.exports = function checkRulesCoverage(config, logOwners, getLogPath, rule
 
   });
 
+  Object.keys(actions).forEach((actionKey) => {
+
+    const action = actions[actionKey]; 
+
+    action.log.forEach(log => {
+
+      const owner = logOwners[log]; 
+      const containsProp = rules.__log__[log][owner.rules].$logId.action[actionKey].hasOwnProperty('.write');
+
+    });
+
+  });
+
   /**
    * Check owner and action rules.
    */
