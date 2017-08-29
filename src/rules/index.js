@@ -31,9 +31,6 @@ module.exports = function generateRules(config, logOwners, getLogPath, commandSo
     update(rulesObj, pathArr, (rules) => rules ? Object.assign({}, rules, pathRules) : pathRules);
   })
 
-  return {
-    rules: rulesObj,
-    filePaths
-  };
+  return rulesObj;
   
 }

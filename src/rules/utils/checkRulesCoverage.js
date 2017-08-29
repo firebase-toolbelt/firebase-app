@@ -1,26 +1,8 @@
-const omit = require('lodash/fp/omit');
-
-function getPathsWithRules(paths, fileRules) {
-  let pathWithRules = 0;
-
-  Object.keys(fileRules).forEach(ruleKey => {
-    Object.keys(paths).forEach(pathId => {
-
-      if (pathId === ruleKey) {
-        pathWithRules = pathWithRules + 1;
-      }
-
-    });
-  });
-
-  return pathWithRules;
-}
-
 /**
  * Check if rules are created for each associated component.
  */
 
-module.exports = function checkRulesCoverage(config, logOwners, getLogPath, rules, filePaths) {
+module.exports = function checkRulesCoverage(config, logOwners, getLogPath, rules) {
 
   let covered = 0;
   let total = 0;
@@ -35,47 +17,60 @@ module.exports = function checkRulesCoverage(config, logOwners, getLogPath, rule
 
   let pathRootKeys = {};
 
-  Object.keys(paths).forEach((pathKey) => {
+  Object.keys(paths).forEach(pathKey => {
 
-    let pathRootKey;
     const path = (typeof paths[pathKey] === 'function') ? paths[pathKey]() : paths[pathKey];
-    pathRootKey = path.split('/')[0];
+    const pathRootKey = path.split('/')[0];
 
     if (!pathRootKeys[pathRootKey]) {
+
       total++;
-      if (rules[pathRootKey]) covered++;
-    } else {
       pathRootKeys[pathRootKey] = true;
+
+      if (rules[pathRootKey]) covered++;
+
     }
 
   });
 
-  Object.keys(actions).forEach((actionKey) => {
+  /**
+   * Check action rules.
+   * Verify if each action log contains write rule
+   */
 
-    const action = actions[actionKey]; 
+  Object.keys(actions).forEach(actionKey => {
+
+    let containsWriteProp = false;
+    const action = actions[actionKey];
 
     action.log.forEach(log => {
 
-      const owner = logOwners[log]; 
-      const containsProp = rules.__log__[log][owner.rules].$logId.action[actionKey].hasOwnProperty('.write');
+      const owner = logOwners[log];
+      const logActionRule = rules.__log__[log][owner.rules].$logId.action[actionKey];
+
+      containsWriteProp = logActionRule ? logActionRule.hasOwnProperty('.write') : false;
 
     });
+
+    total++;
+    if (containsWriteProp) covered++;
 
   });
 
   /**
-   * Check owner and action rules.
+   * Check owner rules.
+   * Verify if each owner log contains read rule
    */
   
-  total += Object.keys(owners).length + Object.keys(actions).length;
+  Object.keys(owners).forEach(ownerKey => {
 
-  filePaths.forEach((filePath) => {
+    const ownerId = logOwners[ownerKey].rules;
+    const logOwnerRule = rules.__log__[ownerKey][ownerId];
 
-    let fileRules = require(filePath);
-    fileRules = omit(['__setup__', '__default__'])(fileRules);
+    const containsReadProp = logOwnerRule ? logOwnerRule.hasOwnProperty('.read') : false;
 
-    covered += getPathsWithRules(owners, fileRules);
-    covered += getPathsWithRules(actions, fileRules);
+    total++;
+    if (containsReadProp) covered++;
 
   });
 

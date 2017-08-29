@@ -38,16 +38,13 @@ program
 		 * Generate the rules object.
 		 */
 
-		const { 
-			rules,
-			filePaths
-		} = generateRules(config, logOwners, getLogPath, commandSource);
+		const rules = generateRules(config, logOwners, getLogPath, commandSource);
 
 		/**
 		 * Check the rules coverage.
 		 */
 
-		const coverage = checkRulesCoverage(config, logOwners, getLogPath, rules, filePaths);
+		const coverage = checkRulesCoverage(config, logOwners, getLogPath, rules);
 
 		/**
 		 * Write file and print coverage reports.
