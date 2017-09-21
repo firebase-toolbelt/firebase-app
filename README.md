@@ -1,4 +1,6 @@
-# Firebase App
+<a align="center" href="https://keeptasking.com"><img width="100%" src="https://image.ibb.co/d88XEQ/Firebase_App.png" alt="Firebase Toolbelt" border="0" /></a>
+
+> A framework for creating secure and mantainable Firebase backed applications.
 
 Firebase is awesome and it's really easy to setup a small app using it.
 However, when building a complex application using solely firebase as it's backend a lot of caveats appear.
