@@ -1,4 +1,4 @@
-<a align="center" href="https://github.com/tasking/firebase-toolbelt"><img width="100%" src="https://image.ibb.co/d88XEQ/Firebase_App.png" alt="Firebase Toolbelt" border="0" /></a>
+<a align="center" href="https://github.com/tasking/firebase-toolbelt"><img width="100%" src="https://i.imgur.com/gsWKP9l.png" alt="Firebase Toolbelt" border="0" /></a>
 
 > A framework for creating secure and mantainable Firebase backed applications.
 
